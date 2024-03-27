@@ -11,7 +11,7 @@ class CheckInOut:
     def __init__(self):
         self.storage = Storage()
 
-    def check_in(self, transaction):
+    def check_in(self, transaction:Transaction):
         self.storage.cursor.execute("INSERT INTO transactions (user_id, book_isbn, transaction_type, transaction_date) VALUES (?, ?, ?, ?)",
                                      (transaction.user_id, transaction.book_isbn, "check_in", transaction.transaction_date))
         self.storage.conn.commit()
@@ -19,13 +19,13 @@ class CheckInOut:
     def check_out(self, user_id, book_isbn):
         # Check in a book from a user
         # Find the latest transaction for the specified book and user
-        self.storage.cursor.execute("SELECT id FROM transactions WHERE user_id=? AND book_isbn=? AND transaction_type='check_out' ORDER BY transaction_date DESC LIMIT 1",
+        self.storage.cursor.execute("SELECT id FROM transactions WHERE user_id=? AND book_isbn=? AND transaction_type='check_in' ORDER BY transaction_date DESC LIMIT 1",
                                      (user_id, book_isbn))
         row = self.storage.cursor.fetchone()
         if row:
             transaction_id = row[0]
             # Update the transaction to mark it as checked in
-            self.storage.cursor.execute("UPDATE transactions SET transaction_type='check_in' WHERE id=?",
+            self.storage.cursor.execute("UPDATE transactions SET transaction_type='check_out' WHERE id=?",
                                          (transaction_id,))
             self.storage.conn.commit()
         else:

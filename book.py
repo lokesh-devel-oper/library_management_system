@@ -23,13 +23,13 @@ class BookManager:
 
     def update_book(self,book:Book):
         # Update an existing book
-        self.storage.cursor.execute("UPDATE books SET title=?, author=?, isbn=? WHERE id=?",
-                                     (book.title, book.author, book.isbn, book.id))
+        self.storage.cursor.execute("UPDATE books SET title=?, author=? WHERE isbn=?",
+                                     (book.title, book.author, book.isbn))
         self.storage.conn.commit()
 
-    def delete_book(self,book_id):
+    def delete_book(self,book_isbn):
         # Delete a book from storage
-        self.storage.cursor.execute("DELETE FROM books WHERE id=?", (book_id,))
+        self.storage.cursor.execute("DELETE FROM books WHERE isbn=?", (book_isbn,))
         self.storage.conn.commit()
 
     def list_books(self):

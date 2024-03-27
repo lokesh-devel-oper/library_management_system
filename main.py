@@ -1,3 +1,4 @@
+from datetime import datetime
 from book import BookManager
 from user import UserManager
 from check import CheckInOut
@@ -28,7 +29,7 @@ def main():
                 print("Exiting...")
                 break
             else:
-                print("Invalid choice. Please try again.")
+                print("<<<<<<<<<<<  Invalid choice. Please try again.  >>>>>>>>>>>>>>>")
     except Exception as e:
         print("An error occurred:", str(e))
     finally:
@@ -36,7 +37,7 @@ def main():
         user_manager.close_connection()
         check_manager.close_connection()
 
-def user_operation_menu(user_manager):
+def user_operation_menu(user_manager:UserManager):
     try:
         while True:
             print("User Management")
@@ -50,55 +51,71 @@ def user_operation_menu(user_manager):
             choice = input("Enter your choice: ")
 
             if choice == "1":
-                # Add User
-                pass
+                user_name = input("Enter user name: ")
+                user_id = input("enter your email: ")
+                user_manager.add_user(User(user_name, user_id))
+                print(f"-------------Successfully added {user_name}, Welcome!---------------")
             elif choice == "2":
                 # Update User
-                pass
+                user_name = input("Enter user name: ")
+                user_id = input("enter your email: ")
+                user_manager.update_user(User(user_name, user_id))
+                print(f"----------------Successfully updated {user_name}, Welcome!-------------")
             elif choice == "3":
                 # Delete User
-                pass
+                user_id = input("enter your email: ")
+                user_manager.delete_user(user_id)
+                print(f"----------------Successfully Deleted user related with {user_id}----------")
             elif choice == "4":
                 # List Users
-                pass
+                users = user_manager.list_users()
+                print('*'*15)
+                print(users)
+                print("-"*15)
             elif choice == "5":
                 # Search User
-                pass
+                keyword = input("enter name/email to search: ")
+                users = user_manager.search_user(keyword)
+                print('='*15)
+                print(users)
+                print("="*15)
             elif choice == "6":
                 break
             else:
-                print("Invalid choice. Please try again.")
+                print("---------------Invalid choice. Please try agin.----------------")
     except Exception as e:
-        print("An error occurred:", str(e))
+        print(">>>>>>>>An error occurred:", str(e))
 
-def check_operation_menu(check_manager):
+def check_operation_menu(check_manager: CheckInOut):
     try:
         while True:
             print("Check Out/Check In")
             print("1. Check Out")
             print("2. Check In")
-            print("3. Track Book Availability")
-            print("4. Back")
+            print("3. Back")
 
             choice = input("Enter your choice: ")
 
             if choice == "1":
                 # Check Out
-                pass
+                user_id = input("enter your email: ")
+                book_isbn = input("enter book isbn: ")
+                check_manager.check_out(user_id, book_isbn)
+                print('-------------------Checkout successfull----------------')
             elif choice == "2":
                 # Check In
-                pass
+                user_id = input("enter your email: ")
+                book_isbn = input("enter book isbn: ")
+                check_manager.check_in(Transaction(user_id, book_isbn, 'check_in', datetime.now().strftime('%d/%m/%Y, %H:%M:%S')))
+                print('-------------------checkin successful---------------------')
             elif choice == "3":
-                # Track Book Availability
-                pass
-            elif choice == "4":
                 break
             else:
-                print("Invalid choice. Please try again.")
+                print("----------------Invalid choice. Please try again.------------")
     except Exception as e:
-        print("An error occurred:", str(e))
+        print(">>>>>>>An error occurred:", str(e))
 
-def book_operation_menu(book_manager):
+def book_operation_menu(book_manager: BookManager):
     try:
         while True:
             print("Book Management")
@@ -112,26 +129,42 @@ def book_operation_menu(book_manager):
             choice = input("Enter your choice: ")
 
             if choice == "1":
-                # Add Book
-                pass
+                book_title = input("enter book title: ")
+                book_author = input('enter book author: ')
+                book_isbn = input("enter book isbn: ")
+                book_manager.add_book(Book(book_title,book_author,book_isbn))
+                print(f"---------------Added {book_title} Successfully!------------------")
             elif choice == "2":
                 # Update Book
-                pass
+                book_title = input("enter book title: ")
+                book_author = input('enter book author: ')
+                book_isbn = input("enter book isbn: ")
+                book_manager.update_book(Book(book_title,book_author,book_isbn))
+                print(f"----------------Updated {book_title} Successfully!-------------------")
             elif choice == "3":
                 # Delete Book
-                pass
+                book_isbn = input("enter book isbn: ")
+                book_manager.delete_book(book_isbn)
+                print(f"------------------deleted book related with {book_isbn} Successfully!-------------")
             elif choice == "4":
                 # List Books
-                pass
+                books = book_manager.list_books()
+                print('*'*10)
+                print(books)
+                print("-"*10)
             elif choice == "5":
                 # Search Book
-                pass
+                keyword = input("enter name/author/isbn to search: ")
+                users = book_manager.search_book(keyword)
+                print('='*10)
+                print(users)
+                print("="*10)
             elif choice == "6":
                 break
             else:
-                print("Invalid choice. Please try again.")
+                print("--------------------Invalid choice. Please try again.--------------------")
     except Exception as e:
-        print("An error occurred:", str(e))
+        print(">>>>>>>>>An error occurred:", str(e))
 
 # Implement other menu functions similarly
 

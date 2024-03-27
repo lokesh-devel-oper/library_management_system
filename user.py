@@ -18,13 +18,13 @@ class UserManager:
 
     def update_user(self, user:User):
         # Update an existing user
-        self.storage.cursor.execute("UPDATE users SET name=?, user_id=? WHERE id=?",
-                                     (user.name, user.user_id, user.id))
+        self.storage.cursor.execute("UPDATE users SET name=? WHERE user_id=?",
+                                     (user.name, user.user_id))
         self.storage.conn.commit()
 
     def delete_user(self, user_id):
         # Delete a user from storage
-        self.storage.cursor.execute("DELETE FROM users WHERE id=?", (user_id,))
+        self.storage.cursor.execute("DELETE FROM users WHERE user_id=?", (user_id,))
         self.storage.conn.commit()
 
     def list_users(self):
